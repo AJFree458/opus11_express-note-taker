@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const bodyParser = require('body-parser')
 
 var app = express();
 
@@ -24,9 +23,10 @@ app.get("/api/notes", function(req, res) {
   });
 
 app.post("/api/note", function(req, res) {
-  
+
 });
 
+// HTML routes for the server
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
