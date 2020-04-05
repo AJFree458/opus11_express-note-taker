@@ -6,6 +6,7 @@ var app = express();
 
 var PORT = process.env.PORT || 3000;
 
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -33,7 +34,16 @@ app.post("/api/notes", (req, res) => {
     });
     res.json(noteArray);
   });
-  
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+  let noteDB = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  const filterNote = noteDB.filter(note => note.id !==parseInt(req.params.id));
+  const stringNoteID = JSON.stringify(filterNote);
+  fs.writeFile("./db/db.json", stringNoteID, "utf8", (err, data) => {
+    if (err) throw err;
+  });
+  res.json(filterNote);
 });
 
 // HTML routes for the server
