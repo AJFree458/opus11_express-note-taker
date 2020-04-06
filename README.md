@@ -37,7 +37,7 @@ This project's repository is at: [opus11_express-note-taker](https://github.com/
 
 ## Deployment
 
-This application is currently deployed at []().
+This application is currently deployed at [Heroku](https://ancient-woodland-06582.herokuapp.com/).
 
 ## Usage
 
