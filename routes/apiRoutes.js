@@ -18,6 +18,9 @@ module.exports = function(app) {
       fs.readFile("./db/db.json", (err, data) => {
         noteArr = JSON.parse(data);
         noteArr.push(noteNew);
+        noteArr.forEach((note, i) => {
+          note.id = i +1
+        });
         const noteString = JSON.stringify(noteArr);
         fs.writeFile("./db/db.json", noteString, (err) => {
           if (err) throw err;
@@ -27,18 +30,18 @@ module.exports = function(app) {
     });
     
     app.delete("/api/notes/:id", (req, res) => {
-      const id = req.params.id;
+      const id = parseInt(req.params.id);
       // console.log(id);
       noteArr = JSON.parse(fs.readFileSync("./db/db.json"));
       // console.log(noteArr);
-      noteArrSplice = noteArr.splice(parseInt(id), 1);
+      noteArrFilter = noteArr.filter(note => note.id !==id);
       // console.log(noteArrSplice);
-      const stringNoteID = JSON.stringify(noteArr);
+      const stringNoteID = JSON.stringify(noteArrFilter);
       // console.log(stringNoteID);
       fs.writeFile("./db/db.json", stringNoteID, (err) => {
         if (err) throw err;
       });
-      res.json(noteArr);
+      res.json(noteArrFilter);
     });
     
 }
