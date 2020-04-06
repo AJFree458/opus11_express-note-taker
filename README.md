@@ -9,6 +9,8 @@ Note taking is an activity that can be very important for memorization and recor
 
 This application will allow the user to leave the application, and then come back later and still have the saved notes there.
 
+This application uses the Express, Path and fs npms, and is built with Node.
+
 ## Table of Content
 
 * [Installation](#installation)
@@ -41,7 +43,9 @@ This application is currently deployed at [Heroku](https://ancient-woodland-0658
 
 ## Usage
 
+This application is simple to use. The user goes to the web site, and then presses the button to start taking notes. The user then inputs a title in the title area and the note in the text area. To delete, click the trash can, and to view a note, click the note to view.
 
+![App Demo](./img/Note-Taker-Demo.gif)
 
 ## License
 
