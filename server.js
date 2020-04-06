@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 
+let noteArr = [];
+
 var app = express();
 
 var PORT = process.env.PORT || 3000;
@@ -11,39 +13,41 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/api/notes", function(req, res) {
-    fs.readFile("./db/db.json", "utf8", (err, data) => {
+    fs.readFile(__dirname + "/db/db.json", (err, data) => {
       if(err) throw err;
       else {
-        let notesSave = JSON.parse(data);
-        res.send(notesSave);
+        noteArr = JSON.parse(data);
+        res.json(noteArr);
       }
     })
   });
 
 app.post("/api/notes", (req, res) => {
   const noteNew = req.body;
-  fs.readFile("./db/db.json", "utf8", (err, data) => {
-    const noteArray = JSON.parse(data);
-    noteArray.push(noteNew);
-    noteArray.forEach((note, i) => {
-      note.id = i +1
-    });
-    const noteString = JSON.stringify(noteArray);
-    fs.writeFile("./db/db.json", noteString, "utf8", (err) => {
+  fs.readFile(__dirname + "/db/db.json", (err, data) => {
+    noteArr = JSON.parse(data);
+    noteArr.push(noteNew);
+    const noteString = JSON.stringify(noteArr);
+    fs.writeFile(__dirname + "/db/db.json", noteString, (err) => {
       if (err) throw err;
     });
-    res.json(noteArray);
+    res.json(noteArr);
   });
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-  let noteDB = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-  const filterNote = noteDB.filter(note => note.id !==parseInt(req.params.id));
-  const stringNoteID = JSON.stringify(filterNote);
-  fs.writeFile("./db/db.json", stringNoteID, "utf8", (err, data) => {
+  const id = req.params.id;
+  // console.log(id);
+  noteArr = JSON.parse(fs.readFileSync(__dirname + "/db/db.json"));
+  // console.log(noteArr);
+  noteArrSplice = noteArr.splice(parseInt(id), 1);
+  // console.log(noteArrSplice);
+  const stringNoteID = JSON.stringify(noteArr);
+  // console.log(stringNoteID);
+  fs.writeFile("./db/db.json", stringNoteID, (err) => {
     if (err) throw err;
   });
-  res.json(filterNote);
+  res.json(noteArr);
 });
 
 // HTML routes for the server
